@@ -61,6 +61,22 @@ app.get("/api/v1/jobs/:id", (req, res) => {
   res.status(200).send({ job });
 });
 
+//EDIT A JOB
+app.patch("/api/v1/jobs/:id", (req, res) => {
+  const { id } = req.params;
+  const { company, position } = req.body;
+  if (!company || !position) {
+    return res.status(400).send("Company and Position are required");
+  }
+  const job = jobs.find((job) => job.id === id);
+  if (!job) {
+    return res.status(404).send(`No job with id ${id} was found`);
+  }
+  job.company = company;
+  job.position = position;
+  res.status(200).send({ job });
+});
+
 const port = process.env.PORT || 5100;
 
 app.listen(port, () => {
