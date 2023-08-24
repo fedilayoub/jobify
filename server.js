@@ -84,11 +84,20 @@ app.delete("/api/v1/jobs/:id", (req, res) => {
   if (!job) {
     return res.status(404).send(`No job with id ${id} was found`);
   }
-const newJobs = jobs.filter((job) => job.id !== id);
-jobs = newJobs;
+  const newJobs = jobs.filter((job) => job.id !== id);
+  jobs = newJobs;
   res.status(204).send({ jobs });
-})
+});
 const port = process.env.PORT || 5100;
+
+app.use("*", (req, res) => {
+  res.status(404).send("Not Found");
+});
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).json({ message: "Something went wrong" });
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port} ...`);
