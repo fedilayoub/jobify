@@ -14,6 +14,7 @@ let jobs = [
 ];
 
 export const getAllJobs = async (req, res) => {
+  const jobs = await Job.find({});
   res.status(200).send(jobs);
 };
 
