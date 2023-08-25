@@ -2,11 +2,10 @@ import * as dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import jobRouter from "./routes/jobRouter.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 const app = express();
-
-
 
 //HTTP request logger middleware for node.js
 if (process.env.NODE_ENV === "development") {
@@ -37,6 +36,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Something went wrong" });
 });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port} ...`);
-});
+try {
+  await mongoose.connect(process.env.MONGO_URI);
+  app.listen(port, () => {
+    console.log(`Listening on port ${port} ...`);
+  });
+} catch {
+  console.log(err);
+  process.exit(1)
+}
