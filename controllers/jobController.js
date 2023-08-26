@@ -1,52 +1,37 @@
-import Job from '../models/JobModel.js';
-import { nanoid } from "nanoid";
-let jobs = [
-  {
-    id: nanoid(),
-    company: "Google",
-    position: "Software Engineer",
-  },
-  {
-    id: nanoid(),
-    company: "Facebook",
-    position: "Software Engineer",
-  },
-];
+import Job from "../models/JobModel.js";
+import { StatusCodes } from "http-status-codes";
+import { NotFoundError } from "../errors/customErrors.js";
 
 export const getAllJobs = async (req, res) => {
   const jobs = await Job.find({});
-  res.status(200).send(jobs);
+  res.status(StatusCodes.OK).send(jobs);
 };
 
 export const createJob = async (req, res) => {
   const { company, position } = req.body;
   const job = await Job.create({ company, position });
-  
-  res.status(201).send({ job });
+
+  res.status(StatusCodes.CREATED).send({ job });
 };
 
 export const getJob = async (req, res) => {
   const { id } = req.params;
   const job = await Job.findById(id);
   if (!job) {
-    return res.status(404).send(`No job with id ${id} was found`);
+    throw new NotFoundError(`No job with id ${id} was found`);
   }
-  res.status(200).send({ job });
+  res.status(StatusCodes.OK).send({ job });
 };
 
 export const editJob = async (req, res) => {
   const { id } = req.params;
-  const { company, position } = req.body;
-  if (!company || !position) {
-    return res.status(400).send("Company and Position are required");
-  }
-  const job = jobs.find((job) => job.id === id);
-  if (!job) {
+  const updatedJob = await Job.findByIdAndUpdate(id, req.body, { new: true });
+  if (!updatedJob) {
     return res.status(404).send(`No job with id ${id} was found`);
   }
-  job.company = company;
-  job.position = position;
-  res.status(200).send({ job });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: `Job with id ${id} was updated`, job: updatedJob });
 };
 
 export const deleteJob = async (req, res) => {
@@ -55,5 +40,5 @@ export const deleteJob = async (req, res) => {
   if (!removedJob) {
     return res.status(404).send(`No job with id ${id} was found`);
   }
-  res.status(200).send({ msg: `Job with id ${id} was deleted` });
+  res.status(StatusCodes.OK).send({ msg: `Job with id ${id} was deleted` });
 };
