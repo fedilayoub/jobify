@@ -1,10 +1,11 @@
-import 'express-async-errors'
+import "express-async-errors";
 import * as dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import jobRouter from "./routes/jobRouter.js";
 import mongoose from "mongoose";
-import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
+import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
+import { validateTest } from "./middleware/validationMiddleware.js";
 
 dotenv.config();
 const app = express();
@@ -20,10 +21,15 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.post("/", (req, res) => {
-  res.send("Hello World!");
-  console.log(req.body);
-});
+app.post(
+  "/api/v1/test",
+  validateTest,
+  (req, res) => {
+    const { name } = req.body;
+    res.status();
+    console.log(req.body);
+  }
+);
 
 // Job router
 app.use("/api/v1/jobs", jobRouter);
@@ -42,5 +48,5 @@ try {
   });
 } catch {
   console.log(err);
-  process.exit(1)
+  process.exit(1);
 }
