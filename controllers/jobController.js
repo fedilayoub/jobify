@@ -4,14 +4,13 @@ import { NotFoundError } from "../errors/customErrors.js";
 
 export const getAllJobs = async (req, res) => {
   const jobs = await Job.find({});
-  res.status(StatusCodes.OK).send(jobs);
+  res.status(StatusCodes.OK).json({ jobs });
 };
 
 export const createJob = async (req, res) => {
   const { company, position } = req.body;
   const job = await Job.create({ company, position });
-
-  res.status(StatusCodes.CREATED).send({ job });
+  res.status(StatusCodes.CREATED).json({ job });
 };
 
 export const getJob = async (req, res) => {
@@ -20,7 +19,7 @@ export const getJob = async (req, res) => {
   if (!job) {
     throw new NotFoundError(`No job with id ${id} was found`);
   }
-  res.status(StatusCodes.OK).send({ job });
+  res.status(StatusCodes.OK).json({ job });
 };
 
 export const editJob = async (req, res) => {
@@ -40,5 +39,5 @@ export const deleteJob = async (req, res) => {
   if (!removedJob) {
     return res.status(404).send(`No job with id ${id} was found`);
   }
-  res.status(StatusCodes.OK).send({ msg: `Job with id ${id} was deleted` });
+  res.status(StatusCodes.OK).json({ msg: `Job with id ${id} was deleted`, job: removedJob });
 };
