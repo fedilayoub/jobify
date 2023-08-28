@@ -1,4 +1,4 @@
-import { body, validationResult } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 import { BadRequestError } from "../errors/customErrors.js";
 import { JOB_STATUS, JOB_TYPE } from "../utils/constants.js";
 
@@ -20,5 +20,11 @@ export const validateJobInput = withValidationErrors(
       body("jobLocation").notEmpty().withMessage("Job location is required"),
       body("jobStatus").isIn(Object.values(JOB_STATUS)).withMessage("Invalid job status"),
       body("jobType").isIn(Object.values(JOB_TYPE)).withMessage("Invalid job type"),
+    ]
+)
+
+export const validateIdParam = withValidationErrors(
+    [
+      param("id").isMongoId().withMessage("Invalid job id"),
     ]
 )
