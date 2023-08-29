@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import jobRouter from "./routes/jobRouter.js";
+import authRouter from "./routes/authRouter.js";
 import mongoose from "mongoose";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 
@@ -16,13 +17,11 @@ if (process.env.NODE_ENV === "development") {
 //Setup express middleware to accept json
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-
 // Job router
 app.use("/api/v1/jobs", jobRouter);
+
+// Auth router
+app.use("/api/v1/auth", authRouter);
 const port = process.env.PORT || 5100;
 
 app.use("*", (req, res) => {
