@@ -9,3 +9,8 @@ export const register = async (req, res) => {
     res.status(StatusCodes.CREATED).json({ user });
 }
 
+
+export const login = async (req, res) => {
+    const user = await User.login(req.body);
+    res.status(StatusCodes.OK).json({ user });
+} 
