@@ -6,3 +6,9 @@ export const hashPassword = async (password) => {
     const hashedPassword = await bycrypt.hash(password, salt);
     return hashedPassword;
 }
+
+
+export const checkPassword = async (password, hashedPassword) => {
+    const isMatch = await bycrypt.compare(password, hashedPassword);
+    return isMatch;
+} 
