@@ -6,6 +6,7 @@ import jobRouter from "./routes/jobRouter.js";
 import authRouter from "./routes/authRouter.js";
 import mongoose from "mongoose";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
+import { authenticateUser } from "./middleware/authMiddleware.js";
 
 dotenv.config();
 const app = express();
@@ -18,7 +19,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 
 // Job router
-app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/jobs",authenticateUser, jobRouter);
 
 // Auth router
 app.use("/api/v1/auth", authRouter);
