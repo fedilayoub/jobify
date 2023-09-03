@@ -7,6 +7,7 @@ import authRouter from "./routes/authRouter.js";
 import mongoose from "mongoose";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middleware/authMiddleware.js";
+import cookieParser from 'cookie-parser'
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,9 @@ if (process.env.NODE_ENV === "development") {
 }
 //Setup express middleware to accept json
 app.use(express.json());
+
+//Cookie parser middleware
+app.use(cookieParser());
 
 // Job router
 app.use("/api/v1/jobs",authenticateUser, jobRouter);
