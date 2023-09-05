@@ -1,3 +1,4 @@
+
 import User from "../models/UserModel.js";
 import { StatusCodes } from "http-status-codes";
 import { hashPassword } from "../utils/passwordUtils.js";
@@ -30,3 +31,11 @@ export const login = async (req, res) => {
   });
   res.status(StatusCodes.OK).json({ msg: "user logged in successfully" });
 };
+
+export const logout = async (req, res) => {
+  res.cookie("token", "", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.status(StatusCodes.OK).json({ msg: "user logged out successfully" });
+}
