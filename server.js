@@ -4,6 +4,7 @@ import express from "express";
 import morgan from "morgan";
 import jobRouter from "./routes/jobRouter.js";
 import authRouter from "./routes/authRouter.js";
+import userRouter from "./routes/userRouter.js";
 import mongoose from "mongoose";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middleware/authMiddleware.js";
@@ -27,6 +28,10 @@ app.use("/api/v1/jobs",authenticateUser, jobRouter);
 
 // Auth router
 app.use("/api/v1/auth", authRouter);
+
+// User router
+ app.use("/api/v1/users",authenticateUser, userRouter);
+
 const port = process.env.PORT || 5100;
 
 app.use("*", (req, res) => {
