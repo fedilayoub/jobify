@@ -12,7 +12,9 @@ import cookieParser from 'cookie-parser'
 
 dotenv.config();
 const app = express();
-
+app.get("/api/v1/test", (req, res) => {
+  res.json({ msg: "hello" });
+})
 //HTTP request logger middleware for node.js
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -39,6 +41,8 @@ app.use("*", (req, res) => {
 });
 
 app.use(errorHandlerMiddleware);
+
+
 
 try {
   await mongoose.connect(process.env.MONGO_URI);
