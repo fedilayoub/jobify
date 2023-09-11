@@ -1,12 +1,22 @@
 import React, { createContext, useContext, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, redirect, useLoaderData } from "react-router-dom";
 import Wrapper from "../assets/wrappers/Dashboard";
 import { BigSidebar, Navbar, SmallSidebar } from "../components";
 import { checkDarkTheme } from "../App";
+import customFetch from "../utils/customFetch";
 const DashboardContext = createContext({});
 
+export const loader = async () => {
+  try {
+    const { data } = await customFetch.get("/users/current-user");
+    return data;
+  } catch (error) {
+    return redirect("/");
+  }
+};
+
 const DashboardLayout = () => {
-  const temp_user = { name: "john" };
+  const { user } = useLoaderData();
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkDarkTheme());
   const toggleDarkTheme = () => {
@@ -27,7 +37,7 @@ const DashboardLayout = () => {
   return (
     <DashboardContext.Provider
       value={{
-        temp_user,
+        user,
         isDarkTheme,
         showSidebar,
         toggleDarkTheme,
@@ -42,7 +52,7 @@ const DashboardLayout = () => {
           <div>
             <Navbar />
             <div className="dashboard-page">
-              <Outlet />
+              <Outlet context={{ user }} />
             </div>
           </div>
         </main>
