@@ -4,3 +4,4 @@ export {default as BigSidebar } from './BigSidebar';
 export {default as SmallSidebar } from './SmallSidebar';
 export {default as Navbar } from './Navbar';
 export {default as LogoutContainer } from './LogoutContainer';
+export {default as FormRowSelect } from './FormRowSelect';
