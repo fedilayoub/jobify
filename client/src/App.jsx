@@ -16,6 +16,7 @@ import { action as registerAction } from "./pages/Register";
 import { action as loginAction } from "./pages/Login";
 import { action as createJobAction } from "./pages/AddJob";
 import { loader as dashboardLoader } from "./pages/DashboardLayout";
+import { loader as allJobsLoader } from "./pages/AllJobs";
 
 export const checkDarkTheme = () => {
   const isDarkTheme = localStorage.getItem("darkTheme") === "true";
