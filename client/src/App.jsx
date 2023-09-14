@@ -14,6 +14,7 @@ import {
 } from "./pages";
 import { action as registerAction } from "./pages/Register";
 import { action as loginAction } from "./pages/Login";
+import { action as createJobAction } from "./pages/AddJob";
 import { loader as dashboardLoader } from "./pages/DashboardLayout";
 
 export const checkDarkTheme = () => {
@@ -51,6 +52,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <AddJob />,
+            action: createJobAction,
           },
           {
             path: "stats",
@@ -59,6 +61,7 @@ const router = createBrowserRouter([
           {
             path: "all-jobs",
             element: <AllJobs />,
+            loader: allJobsLoader,
           },
           {
             path: "profile",
