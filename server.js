@@ -9,9 +9,16 @@ import mongoose from "mongoose";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middleware/authMiddleware.js";
 import cookieParser from 'cookie-parser'
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+// __dirname : It will resolve to the directory of the current file
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config();
 const app = express();
+app.use(express.static(path.join(__dirname, '/public')))
 
 //HTTP request logger middleware for node.js
 if (process.env.NODE_ENV === "development") {
