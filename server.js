@@ -12,6 +12,13 @@ import cookieParser from 'cookie-parser'
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import cloudinary from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 // __dirname : It will resolve to the directory of the current file
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -54,7 +61,7 @@ try {
   app.listen(port, () => {
     console.log(`Listening on port ${port} ...`);
   });
-} catch {
+} catch (err) {
   console.log(err);
   process.exit(1);
 }
