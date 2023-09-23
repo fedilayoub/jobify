@@ -8,11 +8,11 @@ import userRouter from "./routes/userRouter.js";
 import mongoose from "mongoose";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 import { authenticateUser } from "./middleware/authMiddleware.js";
-import cookieParser from 'cookie-parser'
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import path from 'path';
-import cloudinary from 'cloudinary';
+import cookieParser from "cookie-parser";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import path from "path";
+import cloudinary from "cloudinary";
 
 const app = express();
 dotenv.config();
@@ -27,7 +27,7 @@ cloudinary.config({
 // __dirname : It will resolve to the directory of the current file
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-app.use(express.static(path.join(__dirname, '/public')))
+app.use(express.static(path.join(__dirname, "/public")));
 
 //HTTP request logger middleware for node.js
 if (process.env.NODE_ENV === "development") {
@@ -40,13 +40,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Job router
-app.use("/api/v1/jobs",authenticateUser, jobRouter);
+app.use("/api/v1/jobs", authenticateUser, jobRouter);
 
 // Auth router
 app.use("/api/v1/auth", authRouter);
 
 // User router
- app.use("/api/v1/users",authenticateUser, userRouter);
+app.use("/api/v1/users", authenticateUser, userRouter);
 
 const port = process.env.PORT || 5100;
 
@@ -55,8 +55,6 @@ app.use("*", (req, res) => {
 });
 
 app.use(errorHandlerMiddleware);
-
-
 
 try {
   await mongoose.connect(process.env.MONGO_URI);

@@ -7,13 +7,20 @@ import {
   editJob,
   deleteJob,
 } from "../controllers/jobController.js";
-import { validateJobInput,validateIdParam } from "../middleware/validationMiddleware.js";
+import {
+  validateJobInput,
+  validateIdParam,
+} from "../middleware/validationMiddleware.js";
+import { checkTestUser } from "../middleware/authMiddleware.js";
 
-router.route("/").get(getAllJobs).post(validateJobInput, createJob);
+router
+  .route("/")
+  .get(getAllJobs)
+  .post(checkTestUser, validateJobInput, createJob);
 router
   .route("/:id")
-  .get(validateIdParam,getJob)
-  .patch(validateIdParam,validateJobInput, editJob)
-  .delete(validateIdParam,deleteJob);
+  .get(validateIdParam, getJob)
+  .patch(checkTestUser, validateIdParam, validateJobInput, editJob)
+  .delete(checkTestUser, validateIdParam, deleteJob);
 
 export default router;
