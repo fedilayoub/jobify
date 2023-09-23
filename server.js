@@ -14,6 +14,10 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import cloudinary from 'cloudinary';
 
+const app = express();
+dotenv.config();
+
+// cloudinary config
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
@@ -23,8 +27,6 @@ cloudinary.config({
 // __dirname : It will resolve to the directory of the current file
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-dotenv.config();
-const app = express();
 app.use(express.static(path.join(__dirname, '/public')))
 
 //HTTP request logger middleware for node.js

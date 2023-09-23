@@ -38,7 +38,7 @@ export const validateJobInput = withValidationErrors([
 ]);
 
 export const validateIdParam = withValidationErrors([
-  param("id").custom(async (value,{ req }) => {
+  param("id").custom(async (value, { req }) => {
     const isValidId = mongoose.Types.ObjectId.isValid(value);
     if (!isValidId) {
       throw new BadRequestError("Invalid MongoDB job id");
@@ -90,14 +90,14 @@ export const validateUpdateUserInput = withValidationErrors([
   body("lastName").notEmpty().withMessage("Last name is required"),
   body("location").notEmpty().withMessage("Location is required"),
   body("email")
-  .isEmail()
-  .withMessage("Email must be valid")
-  .notEmpty()
-  .withMessage("Email is required")
-  .custom(async (email) => {
-    const user = await User.findOne({ email });
-    if (user && user._id.toString() !== req.user.userId) {
-      throw new BadRequestError("Email is already in use");
-    }
-  }),
-])
+    .isEmail()
+    .withMessage("Email must be valid")
+    .notEmpty()
+    .withMessage("Email is required")
+    .custom(async (email, { req }) => {
+      const user = await User.findOne({ email });
+      if (user && user._id.toString() !== req.user.userId) {
+        throw new BadRequestError("Email is already in use");
+      }
+    }),
+]);

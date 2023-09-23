@@ -13,7 +13,7 @@ const LogoutContainer = () => {
         className="btn logout-btn"
       >
         {user.avatar ? (
-          <img src={user.avatar.url} alt={user.name} className="img" />
+          <img src={user.avatar} alt={user.name} className="img" />
         ) : (
           <FaUserCircle />
         )}
