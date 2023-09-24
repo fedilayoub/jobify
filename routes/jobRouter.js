@@ -6,6 +6,7 @@ import {
   getJob,
   editJob,
   deleteJob,
+  showStats,
 } from "../controllers/jobController.js";
 import {
   validateJobInput,
