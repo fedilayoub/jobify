@@ -4,7 +4,24 @@ import day from "dayjs";
 import { StatusCodes } from "http-status-codes";
 
 export const getAllJobs = async (req, res) => {
-  const jobs = await Job.find({createdBy: req.user.userId});
+  const { search, jobStatus, jobType } = req.query;
+  const queryObject = {
+    createdBy: req.user.userId,
+  };
+  if (search) {
+    queryObject.$or = [
+      { position: { $regex: search, $options: "i" } },
+      { company: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  if (jobStatus && jobStatus !== "all") {
+    queryObject.jobStatus = jobStatus;
+  }
+  if (jobType && jobType !== "all") {
+    queryObject.jobType = jobType;
+  }
+  const jobs = await Job.find(queryObject);
   res.status(StatusCodes.OK).json({ jobs });
 };
 
@@ -19,7 +36,9 @@ export const getJob = async (req, res) => {
 };
 
 export const editJob = async (req, res) => {
-  const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
   res
     .status(StatusCodes.OK)
     .json({ msg: `Job with id ${req.params.id} was updated`, job: updatedJob });
@@ -35,7 +54,7 @@ export const deleteJob = async (req, res) => {
 export const showStats = async (req, res) => {
   let stats = await Job.aggregate([
     { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
-    { $group: { _id: '$jobStatus', count: { $sum: 1 } } },
+    { $group: { _id: "$jobStatus", count: { $sum: 1 } } },
   ]);
   stats = stats.reduce((acc, curr) => {
     const { _id: title, count } = curr;
@@ -53,11 +72,11 @@ export const showStats = async (req, res) => {
     { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
     {
       $group: {
-        _id: { year: { $year: '$createdAt' }, month: { $month: '$createdAt' } },
+        _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
         count: { $sum: 1 },
       },
     },
-    { $sort: { '_id.year': -1, '_id.month': -1 } },
+    { $sort: { "_id.year": -1, "_id.month": -1 } },
     { $limit: 6 },
   ]);
   monthlyApplications = monthlyApplications
@@ -70,7 +89,7 @@ export const showStats = async (req, res) => {
       const date = day()
         .month(month - 1)
         .year(year)
-        .format('MMM YY');
+        .format("MMM YY");
       return { date, count };
     })
     .reverse();
