@@ -35,8 +35,8 @@ export const getAllJobs = async (req, res) => {
   const skip = (page - 1) * limit;
 
   const sortKey = sortOptions[sort] || sortOptions.newest;
-  const numOfPages = Math.ceil(totalJobs / limit);
   const totalJobs = await Job.countDocuments(queryObject);
+  const numOfPages = Math.ceil(totalJobs / limit);
   const jobs = await Job.find(queryObject)
     .sort(sortKey)
     .skip(skip)
