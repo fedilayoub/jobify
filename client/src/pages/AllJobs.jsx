@@ -13,7 +13,7 @@ export const loader = async ({ request }) => {
     const { data } = await customFetch.get("/jobs", { params });
     return {
       data,
-      params,
+      searchValues: { ...params },
     };
   } catch (error) {
     toast.error(error?.response?.data?.msg);
