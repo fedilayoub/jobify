@@ -41,7 +41,9 @@ export const getAllJobs = async (req, res) => {
     .sort(sortKey)
     .skip(skip)
     .limit(limit);
-  res.status(StatusCodes.OK).json({ jobs, totalJobs, numOfPages });
+  res
+    .status(StatusCodes.OK)
+    .json({ jobs, totalJobs, currentPage: page, numOfPages });
 };
 
 export const createJob = async (req, res) => {
