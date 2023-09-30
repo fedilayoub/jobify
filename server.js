@@ -48,6 +48,10 @@ app.use("/api/v1/auth", authRouter);
 // User router
 app.use("/api/v1/users", authenticateUser, userRouter);
 
+app.get("*", (req,res)=>{
+  res.sendFile(path.resolve(__dirname,"./public","index.html"))
+})
+
 const port = process.env.PORT || 5100;
 
 app.use("*", (req, res) => {
