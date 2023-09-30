@@ -7,7 +7,6 @@ const PageBtnContainer = () => {
   const {
     data: { numOfPages, currentPage },
   } = useAllJobsContext();
-  console.log(numOfPages, currentPage);
   const { search, pathname } = useLocation();
   const navigate = useNavigate();
 

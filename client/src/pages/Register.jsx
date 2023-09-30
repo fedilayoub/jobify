@@ -30,26 +30,22 @@ const Register = () => {
           type="text"
           name="name"
           placeholder="Name"
-          defaultValue={"John"}
         />
         <FormRow
           type="text"
           name="lastName"
           labelText="Last Name"
           placeholder="Last Name"
-          defaultValue={"Doe"}
         />
         <FormRow
           type="email"
           name="email"
           placeholder="Email"
-          defaultValue={"john@gmail.com"}
         />
         <FormRow
           type="password"
           name="password"
           placeholder="Password"
-          defaultValue={"secret123"}
         />
         <SubmitButton />
         <p>

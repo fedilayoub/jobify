@@ -6,7 +6,6 @@ import { useAllJobsContext } from "../pages/AllJobs";
 
 const SearchContainer = () => {
   const { searchValues } = useAllJobsContext();
-  console.log(searchValues);
   const { search="", jobStatus, jobType, sort } = searchValues;
   const submit = useSubmit();
   const debounce = (onChange) => {

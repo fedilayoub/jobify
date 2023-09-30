@@ -46,13 +46,11 @@ const Login = () => {
           type="text"
           name="email"
           placeholder="Email"
-          defaultValue={"john@gmail.com"}
         />
         <FormRow
           type="password"
           name="password"
           placeholder="Password"
-          defaultValue={"secret123"}
         />
         <SubmitButton />
         <button type="button" className="btn btn-block" onClick={loginDemoUser}>
