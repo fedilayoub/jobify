@@ -27,7 +27,7 @@ cloudinary.config({
 // __dirname : It will resolve to the directory of the current file
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname, "/client/dist")));
 
 //HTTP request logger middleware for node.js
 if (process.env.NODE_ENV === "development") {
@@ -49,7 +49,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 
 app.get("*", (req,res)=>{
-  res.sendFile(path.resolve(__dirname,"./public","index.html"))
+  res.sendFile(path.resolve(__dirname,"./client/dist","index.html"))
 })
 
 const port = process.env.PORT || 5100;
