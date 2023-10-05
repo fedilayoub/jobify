@@ -15,18 +15,21 @@ export const loader = async ({ params }) => {
     return redirect("/dashboard/all-jobs");
   }
 };
-export const action = async ({ request, params }) => {
-  try {
-    const formData = await request.formData();
-    const data = Object.fromEntries(formData);
-    await customFetch.patch(`/jobs/${params.id}`, data);
-    toast.success("Job updated successfully");
-    return redirect(`/dashboard/all-jobs`);
-  } catch (error) {
-    toast.error(error?.response?.data?.msg);
-    return redirect("/dashboard/all-jobs");
-  }
-};
+export const action =
+  (queryClient) =>
+  async ({ request, params }) => {
+    try {
+      const formData = await request.formData();
+      const data = Object.fromEntries(formData);
+      await customFetch.patch(`/jobs/${params.id}`, data);
+      queryClient.invalidateQueries(["jobs"]);
+      toast.success("Job updated successfully");
+      return redirect(`/dashboard/all-jobs`);
+    } catch (error) {
+      toast.error(error?.response?.data?.msg);
+      return redirect("/dashboard/all-jobs");
+    }
+  };
 
 const EditJob = () => {
   const { job } = useLoaderData();
@@ -58,7 +61,11 @@ const EditJob = () => {
             labelText={"job Type"}
             defaultValue={job?.FULL_TIME}
           />
-          <button type="submit" className="btn btn-block form-btn" disabled={isSubmitting}>
+          <button
+            type="submit"
+            className="btn btn-block form-btn"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Updating..." : "Update"}
           </button>
         </div>
