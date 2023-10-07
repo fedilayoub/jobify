@@ -13,6 +13,8 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import path from "path";
 import cloudinary from "cloudinary";
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
 
 const app = express();
 dotenv.config();
@@ -23,6 +25,10 @@ cloudinary.config({
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
 });
+
+
+app.use(helmet());
+app.use(mongoSanitize());
 
 // __dirname : It will resolve to the directory of the current file
 const __dirname = dirname(fileURLToPath(import.meta.url));
